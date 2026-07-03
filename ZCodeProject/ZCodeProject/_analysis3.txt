@@ -1,0 +1,323 @@
+
+************* Preparing the environment for Debugger Extensions Gallery repositories **************
+   ExtensionRepository : Implicit
+   UseExperimentalFeatureForNugetShare : true
+   AllowNugetExeUpdate : true
+   NonInteractiveNuget : true
+   AllowNugetMSCredentialProviderInstall : true
+   AllowParallelInitializationOfLocalRepositories : true
+   EnableRedirectToChakraJsProvider : false
+
+   -- Configuring repositories
+      ----> Repository : LocalInstalled, Enabled: true
+      ----> Repository : UserExtensions, Enabled: true
+
+>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds
+
+************* Waiting for Debugger Extensions Gallery to Initialize **************
+
+>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.031 seconds
+   ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+   ----> Repository : LocalInstalled, Enabled: true, Packages count: 30
+
+Microsoft (R) Windows Debugger Version 10.0.28000.1839 AMD64
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+
+Loading Dump File [C:\Users\alga\Desktop\070326-31312-01.dmp]
+Mini Kernel Dump File: Only registers and stack trace are available
+
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       cache*C:\symbols
+OK                                             C:\Users\alga\Documents\GitHub\stay out\ZCodeProject\ZCodeProject\injector2\x64\Release
+Symbol search path is: cache*C:\symbols;C:\Users\alga\Documents\GitHub\stay out\ZCodeProject\ZCodeProject\injector2\x64\Release
+Executable search path is: 
+Windows 10 Kernel Version 19041 MP (12 procs) Free x64
+Product: WinNt, suite: TerminalServer SingleUserTS
+Edition build lab: 19041.1.amd64fre.vb_release.191206-1406
+Kernel base = 0xfffff806`32800000 PsLoadedModuleList = 0xfffff806`3342a420
+Debug session time: Fri Jul  3 22:26:10.863 2026 (UTC + 3:00)
+System Uptime: 0 days 2:46:31.524
+Loading Kernel Symbols
+...............................................................
+................................................................
+................................................................
+...................
+Loading User Symbols
+PEB is paged out (Peb.Ldr = 00000099`81a2f018).  Type ".hh dbgerr001" for details
+Loading unloaded module list
+...............
+For analysis of this file, run !analyze -v
+2: kd> kd: Reading initial command '!analyze -v; kb; q -d'
+*******************************************************************************
+*                                                                             *
+*                        Bugcheck Analysis                                    *
+*                                                                             *
+*******************************************************************************
+
+KMODE_EXCEPTION_NOT_HANDLED (1e)
+This is a very common bugcheck.  Usually the exception address pinpoints
+the driver/function that caused the problem.  Always note this address
+as well as the link date of the driver/image that contains this address.
+Arguments:
+Arg1: ffffffffc0000005, The exception code that was not handled
+Arg2: fffff80632f68e6f, The address that the exception occurred at
+Arg3: 0000000000000000, Parameter 0 of the exception
+Arg4: 0000000000000044, Parameter 1 of the exception
+
+Debugging Details:
+------------------
+
+
+KEY_VALUES_STRING: 1
+
+    Key  : Analysis.CPU.Sec
+    Value: 1
+
+    Key  : Analysis.DebugAnalysisProvider.CPP
+    Value: Create: 8007007e on DESKTOP-7EN72Q0
+
+    Key  : Analysis.DebugData
+    Value: CreateObject
+
+    Key  : Analysis.DebugModel
+    Value: CreateObject
+
+    Key  : Analysis.Elapsed.Sec
+    Value: 0
+
+    Key  : Analysis.Memory.CommitPeak.Mb
+    Value: 82
+
+    Key  : Analysis.System
+    Value: CreateObject
+
+
+BUGCHECK_CODE:  1e
+
+BUGCHECK_P1: ffffffffc0000005
+
+BUGCHECK_P2: fffff80632f68e6f
+
+BUGCHECK_P3: 0
+
+BUGCHECK_P4: 44
+
+READ_ADDRESS: fffff806334fb390: Unable to get MiVisibleState
+Unable to get NonPagedPoolStart
+Unable to get NonPagedPoolEnd
+Unable to get PagedPoolStart
+Unable to get PagedPoolEnd
+unable to get nt!MmSpecialPagesInUse
+ 0000000000000044 
+
+EXCEPTION_PARAMETER2:  0000000000000044
+
+BLACKBOXBSD: 1 (!blackboxbsd)
+
+
+BLACKBOXNTFS: 1 (!blackboxntfs)
+
+
+BLACKBOXPNP: 1 (!blackboxpnp)
+
+
+BLACKBOXWINLOGON: 1
+
+CUSTOMER_CRASH_COUNT:  1
+
+PROCESS_NAME:  services.exe
+
+TRAP_FRAME:  ffff800000000000 -- (.trap 0xffff800000000000)
+Unable to read trap frame at ffff8000`00000000
+
+STACK_TEXT:  
+fffff907`c86eeba8 fffff806`32c7f1f3     : 00000000`0000001e ffffffff`c0000005 fffff806`32f68e6f 00000000`00000000 : nt!KeBugCheckEx
+fffff907`c86eebb0 fffff806`32c11eec     : 00000000`00001000 fffff907`c86ef450 ffff8000`00000000 00000000`00000000 : nt!KiDispatchException+0x142ec3
+fffff907`c86ef270 fffff806`32c0d752     : 00000000`0000007e fffff806`32eceea1 ffffc90f`3196eab0 00000000`00000000 : nt!KiExceptionDispatch+0x12c
+fffff907`c86ef450 fffff806`32f68e6f     : ffffc90f`33c21080 00000000`00000000 fffff907`c86ef930 ffffdf07`5e4f0710 : nt!KiPageFault+0x452
+fffff907`c86ef5e0 fffff806`3309b1fb     : ffffc90f`33c21080 00000000`00000008 00000000`00000000 ffffc90f`34697e30 : nt!IopUnloadDriver+0x197
+fffff907`c86ef710 fffff806`32c11505     : ffffc90f`33c21080 00000000`000000c0 00000000`000000e0 ffffdf07`5ca37a30 : nt!NtUnloadDriver+0xb
+fffff907`c86ef740 fffff806`32c023b0     : fffff806`3303a9b6 ffffc90f`33c21080 fffff806`32ddd32d 00000000`00000000 : nt!KiSystemServiceCopyEnd+0x25
+fffff907`c86ef8d8 fffff806`3303a9b6     : ffffc90f`33c21080 fffff806`32ddd32d 00000000`00000000 00000000`00000000 : nt!KiServiceLinkage
+fffff907`c86ef8e0 fffff806`3309b1fb     : ffffc90f`33c21080 00000099`81c7ef14 00000000`00000000 00000000`00000000 : nt!IopUnloadDriver+0xd1cde
+fffff907`c86efa10 fffff806`32c11505     : 00000000`00000000 fffff907`c86efac0 fffff907`c86efac0 00000000`00000000 : nt!NtUnloadDriver+0xb
+fffff907`c86efa40 00007ffc`c0910e94     : 00000000`00000000 00000000`00000000 00000000`00000000 00000000`00000000 : nt!KiSystemServiceCopyEnd+0x25
+00000099`81c7eec8 00000000`00000000     : 00000000`00000000 00000000`00000000 00000000`00000000 00000000`00000000 : 0x00007ffc`c0910e94
+
+
+SYMBOL_NAME:  nt!IopUnloadDriver+197
+
+MODULE_NAME: nt
+
+IMAGE_NAME:  ntkrnlmp.exe
+
+IMAGE_VERSION:  10.0.19041.6456
+
+STACK_COMMAND:  .thread ; .cxr ; kb
+
+BUCKET_ID_FUNC_OFFSET:  197
+
+FAILURE_BUCKET_ID:  0x1E_c0000005_R_nt!IopUnloadDriver
+
+OS_VERSION:  10.0.19041.1
+
+BUILDLAB_STR:  vb_release
+
+OSPLATFORM_TYPE:  x64
+
+OSNAME:  Windows 10
+
+FAILURE_ID_HASH:  {ceee6c57-3f59-0a00-edf7-1a74d2d495d8}
+
+Followup:     MachineOwner
+---------
+
+ # RetAddr               : Args to Child                                                           : Call Site
+00 fffff806`32c7f1f3     : 00000000`0000001e ffffffff`c0000005 fffff806`32f68e6f 00000000`00000000 : nt!KeBugCheckEx
+01 fffff806`32c11eec     : 00000000`00001000 fffff907`c86ef450 ffff8000`00000000 00000000`00000000 : nt!KiDispatchException+0x142ec3
+02 fffff806`32c0d752     : 00000000`0000007e fffff806`32eceea1 ffffc90f`3196eab0 00000000`00000000 : nt!KiExceptionDispatch+0x12c
+03 fffff806`32f68e6f     : ffffc90f`33c21080 00000000`00000000 fffff907`c86ef930 ffffdf07`5e4f0710 : nt!KiPageFault+0x452
+04 fffff806`3309b1fb     : ffffc90f`33c21080 00000000`00000008 00000000`00000000 ffffc90f`34697e30 : nt!IopUnloadDriver+0x197
+05 fffff806`32c11505     : ffffc90f`33c21080 00000000`000000c0 00000000`000000e0 ffffdf07`5ca37a30 : nt!NtUnloadDriver+0xb
+06 fffff806`32c023b0     : fffff806`3303a9b6 ffffc90f`33c21080 fffff806`32ddd32d 00000000`00000000 : nt!KiSystemServiceCopyEnd+0x25
+07 fffff806`3303a9b6     : ffffc90f`33c21080 fffff806`32ddd32d 00000000`00000000 00000000`00000000 : nt!KiServiceLinkage
+08 fffff806`3309b1fb     : ffffc90f`33c21080 00000099`81c7ef14 00000000`00000000 00000000`00000000 : nt!IopUnloadDriver+0xd1cde
+09 fffff806`32c11505     : 00000000`00000000 fffff907`c86efac0 fffff907`c86efac0 00000000`00000000 : nt!NtUnloadDriver+0xb
+0a 00007ffc`c0910e94     : 00000000`00000000 00000000`00000000 00000000`00000000 00000000`00000000 : nt!KiSystemServiceCopyEnd+0x25
+0b 00000000`00000000     : 00000000`00000000 00000000`00000000 00000000`00000000 00000000`00000000 : 0x00007ffc`c0910e94
+                         ^ Syntax error in '!analyze -v; kb; q -d'
+2: kd> kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450
+kd: Could not write to pipe, 1450

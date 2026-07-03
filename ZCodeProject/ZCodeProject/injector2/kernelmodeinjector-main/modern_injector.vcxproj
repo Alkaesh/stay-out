@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  modern_injector.vcxproj - WDK kernel-mode driver (.sys) build.
+
+  WHY v143 + manual WDK paths (not the WindowsKernelModeDriver10.0 toolset):
+    The native WDK MSBuild toolset is registered by the WDK Visual Studio
+    Extension (VSIX), which is NOT installed on this machine (only the WDK
+    headers/libs are). Rather than require the VSIX, this project uses the
+    ordinary MSVC v143 toolset and points cl/link at the WDK kernel include
+    and lib directories explicitly. This is fully self-contained.
+
+  Produces modern_injector.sys from modern_injector.cpp + loader_stub.asm (MASM).
+  Build with:
+      msbuild modern_injector.vcxproj /p:Configuration=Release /p:Platform=x64
+
+  If WDKTargetVersion is not passed, it defaults to 10.0.28000.0.
+-->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{B5C0F1A2-9D44-4E8E-A1B6-3F2C5D7E8A90}</ProjectGuid>
+    <RootNamespace>modern_injector</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <PlatformToolset>v143</PlatformToolset>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <TargetName>modern_injector</TargetName>
+    <TargetExt>.sys</TargetExt>
+    <!-- WDK version installed (km headers/libs live under this version folder). -->
+    <WDKVer Condition="'$(WDKVer)' == ''">10.0.28000.0</WDKVer>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+
+  <!-- MASM (for loader_stub.asm). Conditional import keeps the project parseable
+       if the build customizations are not found. -->
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" Condition="Exists('$(VCTargetsPath)\BuildCustomizations\masm.props')" />
+  </ImportGroup>
+
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+
+  <PropertyGroup Label="UserMacros" />
+
+  <!--
+    WDK kernel include + lib paths. WindowsSdkDir is provided by the VC targets;
+    it points at C:\Program Files (x86)\Windows Kits\10\.
+  -->
+  <PropertyGroup>
+    <WDKInc>$(WindowsSdkDir)Include\$(WDKVer)\km;</WDKInc>
+    <WDKInc>$(WDKInc)$(WindowsSdkDir)Include\$(WDKVer)\shared;</WDKInc>
+    <WDKInc>$(WDKInc)$(WindowsSdkDir)Include\$(WDKVer)\km\crt;</WDKInc>
+    <WDKLib>$(WindowsSdkDir)Lib\$(WDKVer)\km\x64;</WDKLib>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <!-- Kernel C++ build. /kernel selects kernel CRT behavior; _KERNEL_MODE
+           and the WDK includes give us ntifs.h / ntoskrnl.lib territory. -->
+      <AdditionalOptions>/kernel %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(WDKInc);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_AMD64_;_NT_;_WIN2K_COMPAT_SLIST_USAGE;NDIS60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <ExceptionHandling>false</ExceptionHandling>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DisableSpecificWarnings>4201;4221;4324;26451;26495</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <!-- Build a kernel driver image: native subsystem, DriverEntry entry,
+           no default libs, link against ntoskrnl.lib + hal.lib + the kernel
+           stack-buffer-overflow stub. -->
+      <AdditionalLibraryDirectories>$(WDKLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ntoskrnl.lib;hal.lib;BufferOverflowK.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Native</SubSystem>
+      <EntryPointSymbol>DriverEntry</EntryPointSymbol>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalOptions>/Brepro /INTEGRITYCHECK /SUBSYSTEM:NATIVE,10.0 %(AdditionalOptions)</AdditionalOptions>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+    </Link>
+    <!-- MSVC forces the .dll extension for DynamicLibrary; the loader/service
+         control manager needs a .sys. Copy the built image to modern_injector.sys
+         right after linking so the output is a loadable kernel driver image. -->
+    <PostBuildEvent>
+      <Command>copy /Y "$(TargetPath)" "$(TargetDir)$(TargetName).sys" &gt;nul</Command>
+      <Message>Producing modern_injector.sys (kernel driver image)</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <ClCompile Include="modern_injector.cpp" />
+    <MASM Include="loader_stub.asm" />
+  </ItemGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" Condition="Exists('$(VCTargetsPath)\BuildCustomizations\masm.targets')" />
+  </ImportGroup>
+</Project>

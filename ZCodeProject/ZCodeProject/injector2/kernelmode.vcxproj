@@ -20,8 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="loader.cpp" />
-    <ClCompile Include="moderninjector.cpp" />
-    <ClCompile Include="test_client.cpp" />
+    <ClCompile Include="test_client.cpp" Condition="'$(BuildTestClient)' == 'true'" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -29,6 +28,7 @@
     <ProjectGuid>{1a1d8fea-ef38-488c-a28d-545256e66c3c}</ProjectGuid>
     <RootNamespace>kernelmode</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <TargetName>loader</TargetName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

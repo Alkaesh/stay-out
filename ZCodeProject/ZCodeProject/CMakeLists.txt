@@ -51,9 +51,11 @@ set_target_properties(stayout_dll PROPERTIES
 )
 
 # ===========================================================================
-#  Инжектор собирается в том же дереве сборки — одной командой CMake.
-#  Результат:
-#    <build>/<config>/stayout_dll.dll
-#    <build>/injector/<config>/injector.exe
+#  Инжектор (kernel-mode driver + user-mode loader) теперь живёт в injector2/
+#  и собирается ОТДЕЛЬНО через MSBuild — см. build.bat.
+#  Драйвер (modern_injector.cpp) использует WDK (ntifs.h, Zw*) и не может быть
+#  собран этим CMake/Ninja-конфигом. Поэтому CMake строит только research-DLL.
+#  Артефакты инжектора:
+#    injector2/x64/Release/loader.exe            (user-mode loader)
+#    injector2/x64/Release/modern_injector.sys   (kernel driver, нужен WDK)
 # ===========================================================================
-add_subdirectory(injector)
